@@ -1,6 +1,8 @@
 console.log("starting note.js");
 
-export function addNote() {
+const addNote = function () {
     console.log("addNote");
     return "New Note";
 }
+
+module.exports = addNote;
