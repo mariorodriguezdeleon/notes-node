@@ -26,26 +26,34 @@ yargs.command({
         }
     },
     handler: function (argv) {
-        console.log(`\nTitle: ${chalk.blue(argv.title)} \nBody: ${chalk.green(argv.body)}`);
+        notes.addNote(argv.title, argv.body)
+        // console.log(`\nTitle: ${chalk.blue(argv.title)} \nBody: ${chalk.green(argv.body)}`);
     },
 });
 
+// Create remove command
 yargs.command({
     command: 'remove',
     describe: 'Removes a note',
-    handler: function () {
-        console.log('Removing a Note');
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function (argv) {
+        notes.removeNote(argv.title)
     }
 });
 
+// Create list notes command
 yargs.command({
     command: 'list',
     describe: 'Lists all commands',
     handler: function () {
         console.log('Listing out all notes');
     }
-})
-
-// console.log(process.argv);
+});
 
 yargs.parse();
