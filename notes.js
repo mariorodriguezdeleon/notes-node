@@ -2,7 +2,7 @@ const fs = require('fs');
 const chalk = require('chalk')
 
 // helper function - loads notes if file exists or returns an empty array otherwise
-const loadNotes = function () {
+const loadNotes = () => {
 
     //try to load notes if file exist, catch error (e) and send blank array to begin new note.json file
     try {
@@ -18,7 +18,7 @@ const loadNotes = function () {
 }
 
 // helper function - writes note(s) to file
-const saveNotes = function (newNote) {
+const saveNotes = (newNote) => {
 
     const dataJSON = JSON.stringify (newNote);
     fs.writeFileSync('notes.json', dataJSON);
@@ -26,16 +26,17 @@ const saveNotes = function (newNote) {
 }
 
 // Add Notes function
-const addNote = function (title, body) {
+const addNote = (title, body) => {
 
     // Add note functionality
     // Check to see if note title is already in use
     const notes = loadNotes();
-    const duplicateNotes = notes.filter(function (note) {
-        return note.title === title
-    });
+    const duplicateNotes = notes.find( (note) => note.title === title);
     
-    if (duplicateNotes.length === 0) {
+    debugger
+
+
+    if (!duplicateNotes) {
         
         notes.push({
             title: title,
@@ -46,19 +47,17 @@ const addNote = function (title, body) {
         console.log(chalk.green.inverse('New note added'));
 
     } else {
-        console.log(chalk.red.inverse('Not title taken'));
+        console.log(chalk.red.inverse('Title taken!'));
     }
     
 }
 
 //removes note based on title
-const removeNote = function (title) {
+const removeNote = (title) => {
     
     //remove note
     const notes = loadNotes();
-    const notesToKeep = notes.filter(function(note) {
-        return note.title !== title
-    })
+    const notesToKeep = notes.find( (note) => note.title !== title)
     
     
     if (notes.length > notesToKeep.length) {
@@ -67,16 +66,50 @@ const removeNote = function (title) {
     } else {
         console.log(chalk.red.inverse('No note found'));
     }
-
 }
 
-const getNote = function (title) {
+const listNotes = () => {
+    //return list of notes
+    const notes = loadNotes();
+    console.log(chalk.magenta.bold('Available Notes: '))
+
+    notes.forEach( (note) =>{
+        console.log(` - ${note.title}`);
+    });
+}
+
+const readNote = (title) => {
+    //read note
+    const notes = loadNotes();
+    const note = notes.find( (note) => note.title === title);
+    
+    if (note) {
+        
+        console.log(chalk.inverse(`Note: ${note.title}`));
+        console.log(`\nBody: ${note.body}`)
+
+    } else {
+        console.log(chalk.red.inverse('Note not found'));
+    }
+}
+
+const getNotes = () => {
+    //getNotes
     //return notes
+    const notes = loadNotes();
+    console.log(chalk.blue.bold('Available Notes: '))
+
+    notes.forEach( (note) =>{
+        console.log(` - ${note.title}` `\n-Body ${note.body}`);
+    });
 }
 
 module.exports = {
     
-    getNote: getNote,
     addNote: addNote,
-    removeNote: removeNote
+    removeNote: removeNote,
+    listNotes: listNotes,
+    readNote: readNote,
+    getNotes: getNotes
+
 }

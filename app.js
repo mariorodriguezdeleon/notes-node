@@ -25,9 +25,8 @@ yargs.command({
             type: 'string'
         }
     },
-    handler: function (argv) {
+    handler(argv) {
         notes.addNote(argv.title, argv.body)
-        // console.log(`\nTitle: ${chalk.blue(argv.title)} \nBody: ${chalk.green(argv.body)}`);
     },
 });
 
@@ -42,7 +41,7 @@ yargs.command({
             type: 'string'
         }
     },
-    handler: function (argv) {
+    handler(argv) {
         notes.removeNote(argv.title)
     }
 });
@@ -50,10 +49,43 @@ yargs.command({
 // Create list notes command
 yargs.command({
     command: 'list',
-    describe: 'Lists all commands',
-    handler: function () {
-        console.log('Listing out all notes');
+    describe: 'Retrieves all Notes',
+    handler() {
+        notes.listNotes()
     }
 });
+
+// Create read command
+yargs.command({
+    command: 'read',
+    describe: 'Returns body of note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        notes.readNote(argv.title)
+    }
+})
+
+// Create get command - retrives note by title
+// not connected
+yargs.command({
+    command: 'get',
+    describe: 'Retrives note by title',
+    builder: {
+        title: {
+            describe:'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        notes.getNotes(argv.title);
+    }
+})
 
 yargs.parse();
