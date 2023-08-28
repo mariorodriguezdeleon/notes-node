@@ -1,13 +1,14 @@
 const fs = require ('fs');
-const notes = require('./notes.js');
-const validator = require('validator');
-const lodash = require('lodash');
 const chalk = require('chalk');
 const yargs = require('yargs');
+const notes = require('./notes.js');
+const validator = require('validator');
+const lodash = require('lodash' );
 
+//const command = process.argv[2]; Don't need!
 
-// Customize yargs version
-yargs.version('1.1.0')
+// Customize yargs version 
+yargs.version('17.7.2')
 
 // Create add command
 yargs.command({
@@ -89,3 +90,5 @@ yargs.command({
 })
 
 yargs.parse();
+
+// console.log(process.argv);

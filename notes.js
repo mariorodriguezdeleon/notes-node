@@ -25,19 +25,15 @@ const saveNotes = (newNote) => {
 
 }
 
-// Add Notes function
+//Add Note functionality
 const addNote = (title, body) => {
 
-    // Add note functionality
-    // Check to see if note title is already in use
+    //get notes
     const notes = loadNotes();
-    const duplicateNotes = notes.find( (note) => note.title === title);
     
-    debugger
-
-
+    // Check to see if note title is already in use
+    const duplicateNotes = notes.find( (note) => note.title === title);
     if (!duplicateNotes) {
-        
         notes.push({
             title: title,
             body: body
@@ -52,32 +48,37 @@ const addNote = (title, body) => {
     
 }
 
-//removes note based on title
+//Removes Note Funtionality
 const removeNote = (title) => {
-    
-    //remove note
+
+    //get notes
     const notes = loadNotes();
-    const notesToKeep = notes.find( (note) => note.title !== title)
-    
-    
+    //filter out note to remove, rebuild notes json to be saved
+    const notesToKeep = notes.filter( (notes) => {return notes.title !== title});
+    //simple check to see if the note was removed by checking json lengths
     if (notes.length > notesToKeep.length) {
         saveNotes(notesToKeep);
         cconsole.log(chalk.green.inverse('Note Removed'));
     } else {
         console.log(chalk.red.inverse('No note found'));
     }
+
 }
 
+// List Notes
 const listNotes = () => {
-    //return list of notes
+    
+    //get notes
     const notes = loadNotes();
-    console.log(chalk.magenta.bold('Available Notes: '))
 
+    console.log(chalk.magenta.bold('Available Notes: '))
+    //list available notes
     notes.forEach( (note) =>{
         console.log(` - ${note.title}`);
     });
 }
 
+// Read Notes
 const readNote = (title) => {
     //read note
     const notes = loadNotes();
@@ -93,23 +94,24 @@ const readNote = (title) => {
     }
 }
 
+// Get Notes
 const getNotes = () => {
+    
     //getNotes
-    //return notes
     const notes = loadNotes();
     console.log(chalk.blue.bold('Available Notes: '))
 
-    notes.forEach( (note) =>{
+    notes.forEach( (note) => {
         console.log(` - ${note.title}` `\n-Body ${note.body}`);
     });
 }
 
 module.exports = {
     
-    addNote: addNote,
-    removeNote: removeNote,
     listNotes: listNotes,
     readNote: readNote,
-    getNotes: getNotes
+    getNotes: getNotes,
+    addNote: addNote,
+    removeNote: removeNote
 
 }
